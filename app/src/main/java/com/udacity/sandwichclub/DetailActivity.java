@@ -4,23 +4,40 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.udacity.sandwichclub.model.Sandwich;
 import com.udacity.sandwichclub.utils.JsonUtils;
 
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class DetailActivity extends AppCompatActivity {
 
     public static final String EXTRA_POSITION = "extra_position";
     private static final int DEFAULT_POSITION = -1;
 
+    @BindView(R.id.also_known_tv)
+    TextView alsoKnownTv;
+    @BindView(R.id.ingredients_tv)
+    TextView ingredientsTv;
+    @BindView(R.id.origin_tv)
+    TextView originTv;
+    @BindView(R.id.description_tv)
+    TextView descriptionTv;
+    @BindView(R.id.image_iv)
+    ImageView ingredientsIv;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
-
-        ImageView ingredientsIv = findViewById(R.id.image_iv);
+        ButterKnife.bind(this);
 
         Intent intent = getIntent();
         if (intent == null) {
@@ -43,7 +60,7 @@ public class DetailActivity extends AppCompatActivity {
             return;
         }
 
-        populateUI();
+        populateUI(sandwich);
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -56,7 +73,28 @@ public class DetailActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.detail_error_message, Toast.LENGTH_SHORT).show();
     }
 
-    private void populateUI() {
+    private void populateUI(Sandwich sandwich) {
 
+        alsoKnownTv.setText(formatListToString(sandwich.getAlsoKnownAs()));
+        ingredientsTv.setText(formatListToString(sandwich.getIngredients()));
+        originTv.setText(sandwich.getPlaceOfOrigin());
+        descriptionTv.setText(sandwich.getDescription());
+    }
+
+    /**
+     * Convert the List<String> to an String
+     *
+     * @param list given String List
+     * @return converted String
+     */
+    private String formatListToString(List<String> list) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (String string : list) {
+            stringBuilder.append(string);
+        }
+
+        return stringBuilder.toString();
     }
 }
