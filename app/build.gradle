@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "com.udacity.sandwichclub"
         minSdkVersion 16
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
     }
@@ -18,7 +18,7 @@ android {
     }
 }
 
-ext.support_version = "26.1.0"
+ext.support_version = "27.1.1"
 ext.constraint_layout_version = "1.1.0"
 ext.picasso_version = "2.5.2"
 ext.butterknife_version = "8.8.1"
