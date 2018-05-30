@@ -53,14 +53,10 @@ public class DetailActivity extends AppCompatActivity {
 
         String[] sandwiches = getResources().getStringArray(R.array.sandwich_details);
         String json = sandwiches[position];
-        Sandwich sandwich = JsonUtils.parseSandwichJson(json);
-        if (sandwich == null) {
-            // Sandwich data unavailable
-            closeOnError();
-            return;
-        }
 
+        Sandwich sandwich = JsonUtils.parseSandwichJson(json);
         populateUI(sandwich);
+
         Picasso.with(this)
                 .load(sandwich.getImage())
                 .into(ingredientsIv);
@@ -75,10 +71,14 @@ public class DetailActivity extends AppCompatActivity {
 
     private void populateUI(Sandwich sandwich) {
 
-        alsoKnownTv.setText(formatListToString(sandwich.getAlsoKnownAs()));
-        ingredientsTv.setText(formatListToString(sandwich.getIngredients()));
-        originTv.setText(sandwich.getPlaceOfOrigin());
-        descriptionTv.setText(sandwich.getDescription());
+        if (sandwich != null) {
+            alsoKnownTv.setText(formatListToString(sandwich.getAlsoKnownAs()));
+            ingredientsTv.setText(formatListToString(sandwich.getIngredients()));
+            originTv.setText(sandwich.getPlaceOfOrigin());
+            descriptionTv.setText(sandwich.getDescription());
+        } else {
+            closeOnError();
+        }
     }
 
     /**

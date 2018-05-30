@@ -11,23 +11,31 @@ import java.util.List;
 
 public class JsonUtils {
 
+    private final static String NAMEKEY = "name";
+    private final static String MAINNAMEKEY = "mainName";
+    private final static String ALSOKNOWNASKEY = "alsoKnownAs";
+    private final static String PLACEOFORIGINKEY = "placeOfOrigin";
+    private final static String DESCRIPTIONKEY = "description";
+    private final static String IMAGE = "image";
+    private final static String INGREDIENTS = "ingredients";
+
     public static Sandwich parseSandwichJson(String json) {
 
         try {
             JSONObject sandwich = new JSONObject(json);
-            JSONObject name = sandwich.getJSONObject("name");
+            JSONObject name = sandwich.getJSONObject(NAMEKEY);
 
-            String mainName = name.getString("mainName");
+            String mainName = name.getString(MAINNAMEKEY);
 
-            JSONArray alsoKnownAsJSON = name.getJSONArray("alsoKnownAs");
+            JSONArray alsoKnownAsJSON = name.getJSONArray(ALSOKNOWNASKEY);
 
             List<String> alsoKnownAs = loopJSONArray(alsoKnownAsJSON);
 
-            String placeOfOrigin = sandwich.getString("placeOfOrigin");
-            String description = sandwich.getString("description");
-            String image = sandwich.getString("image");
+            String placeOfOrigin = sandwich.getString(PLACEOFORIGINKEY);
+            String description = sandwich.getString(DESCRIPTIONKEY);
+            String image = sandwich.getString(IMAGE);
 
-            JSONArray ingredientsJSON = sandwich.getJSONArray("ingredients");
+            JSONArray ingredientsJSON = sandwich.getJSONArray(INGREDIENTS);
             List<String> ingredients = loopJSONArray(ingredientsJSON);
 
             return new Sandwich(mainName, alsoKnownAs, placeOfOrigin, description, image, ingredients);
@@ -38,6 +46,13 @@ public class JsonUtils {
         return null;
     }
 
+    /**
+     * Create a List from given JSONArray
+     *
+     * @param jsonArray used for knownAs / ingredients etc.
+     * @return List<String>
+     * @throws JSONException
+     */
     private static List<String> loopJSONArray(JSONArray jsonArray) throws JSONException {
 
         List<String> items = new ArrayList<>();
